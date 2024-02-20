@@ -7,7 +7,7 @@ const roboto_mono = Roboto_Mono({ subsets: ["latin"] });
 
 export function ActivityHeader({activityName}: {activityName: string}) {
   return (
-    <h1 className={["text-6xl", "text-center", "p-8"].join(" ")}>
+    <h1 className={["text-7xl", "text-green-500", "font-bold", "text-center", "p-8"].join(" ")}>
       {activityName}
     </h1>
   )
@@ -18,7 +18,7 @@ export function Timer({timeSeconds}: {timeSeconds: number}) {
   const minutes : String = String(Math.floor(timeSeconds / 60)).padStart(2, "0");
   const seconds : String = String(timeSeconds % 60).padStart(2, "0");
   return (
-    <div className={[roboto_mono.className, "text-8xl", "text-center", "p-8"].join(" ")}>{minutes}:{seconds}</div>
+    <div className={[roboto_mono.className, "font-medium", "text-8xl", "text-center", "text-green-500", "p-8"].join(" ")}>{minutes}:{seconds}</div>
   )
 }
 
@@ -87,7 +87,7 @@ export function WorkoutSetTable({activities}: {activities: Activity[]}) {
     )
 }
 
-export function WorkoutSetActivity({activity, key}: {activity: Activity, key: number}) {
+export function WorkoutSetActivity({activity}: {activity: Activity}) {
   return (
     <tr className="border border-slate-500">
       <td className="border border-slate-500 p-2">{activity.name}</td>

@@ -1,6 +1,8 @@
 "use client"
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
+
+import useSound from 'use-sound';
 
 import { ActivityHeader, Timer, ProgressBar, GlobalProgress, Controls, WorkoutSetSettings } from "@/app/ui/components";
 import getWorkoutSet from "@/app/lib/data";
@@ -17,10 +19,20 @@ export default function Home() {
   const [completedWorkout, setCompletedWorkout] = useState(false);
 
   const totalDuration = workoutSet.activities.reduce((acc, activity) => acc + activity.durationSeconds, 0);
+
+  const [shortBeep] = useSound("/sounds/beep-07a.mp3")
+  const [longBeep] = useSound("/sounds/beep-09.mp3")
   
   useEffect(() => {
     const timerId = setInterval(() => {
       if (isRunning) {
+        if (activityTimeRemaining === 4 || activityTimeRemaining === 3 || activityTimeRemaining === 2) {
+          shortBeep();
+        }
+        if (activityTimeRemaining === 1) {
+          longBeep();
+        }
+
         if (activityTimeRemaining > 0) {
           setActivityTimeRemaining(activityTimeRemaining - 1);
           setTimeElapsed(timeElapsed + 1);
@@ -33,6 +45,8 @@ export default function Home() {
             setCompletedWorkout(true);
           }
         }
+
+       
       }
 
     }, 1000);
@@ -56,14 +70,14 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-row justify-center">
-      <div className="basis-3/5 p-8">
+      <div className="basis-4/5 p-8">
         <ActivityHeader activityName={completedWorkout ? "Great job!!!" : currentActivity.name} />
         <Timer timeSeconds={activityTimeRemaining} />
         <ProgressBar timeRemaining={activityTimeRemaining} totalDuration={currentActivity.durationSeconds} />
         <GlobalProgress timeElapsed={timeElapsed} totalDuration={totalDuration} />
         <Controls onStart={onStart} onPause={onPause} onReset={onReset} />
       </div>
-      <div className="basis-2/5 p-8">
+      <div className="basis-1/5 p-8">
         <WorkoutSetSettings workoutSet={workoutSet} />
       </div>
     </main>

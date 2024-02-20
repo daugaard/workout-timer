@@ -2,7 +2,7 @@ import { WorkoutSet } from './definitions'
 
 export default function getWorkoutSet() : WorkoutSet {
     // Initialize the default 7 minute workout set
-    /*
+    
     const workoutSet: WorkoutSet = {id: 1, name: 'Full Body Workout', activities: []};
     workoutSet.activities.push({id: 0, name: 'Get Ready!!', durationSeconds: 10, active: 'rest'});
     workoutSet.activities.push({id: 1, name: 'Jumping Jacks', durationSeconds: 30, active: 'work'});
@@ -30,12 +30,12 @@ export default function getWorkoutSet() : WorkoutSet {
     workoutSet.activities.push({id: 23, name: 'Side Plank Right', durationSeconds: 30, active: 'work'});
     workoutSet.activities.push({id: 24, name: 'Rest', durationSeconds: 10, active: 'rest'});
     workoutSet.activities.push({id: 25, name: 'Side Plank Left', durationSeconds: 30, active: 'work'});
-    */
-
+    
+    /*
     const workoutSet: WorkoutSet = {id: 1, name: 'Full Body Workout', activities: []};
     workoutSet.activities.push({id: 0, name: 'Get Ready!!', durationSeconds: 3, active: 'rest'});
     workoutSet.activities.push({id: 1, name: 'Jumping Jacks', durationSeconds: 5, active: 'work'});
     workoutSet.activities.push({id: 2, name: 'Rest', durationSeconds: 3, active: 'rest'});
-
+    */
     return workoutSet;
 }

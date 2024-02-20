@@ -1,0 +1,1 @@
+declare module 'use-sound'; // Where be dragons! No type safety for this module!!!
