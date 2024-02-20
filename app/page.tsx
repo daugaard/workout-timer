@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import useSound from 'use-sound';
+
 import { Quicksand } from "next/font/google";
 
 import { ActivityHeader, Timer, ProgressBar, GlobalProgress, Controls, WorkoutSetSettings } from "@/app/ui/components";
@@ -57,12 +58,24 @@ export default function Home() {
     return () => clearInterval(timerId);
   });
 
+  let wakeLock : any = null; // WakeLockSentinel
   function onStart() {
     setIsRunning(true);
+    // Request a screen wake lock to keep the screen alive during the workout
+    if ('wakeLock' in navigator) {
+      navigator.wakeLock.request('screen').then((wl) => {
+        wakeLock = wl;
+      });
+    }
   }
 
   function onPause() {
     setIsRunning(false);
+    // Release the screen wake lock
+    if (wakeLock !== null) {
+      wakeLock.release();
+      wakeLock = null;
+    }
   }
 
   function onReset() {
