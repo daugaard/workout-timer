@@ -19,7 +19,7 @@ export function Timer({timeSeconds}: {timeSeconds: number}) {
   const minutes : String = String(Math.floor(timeSeconds / 60)).padStart(2, "0");
   const seconds : String = String(timeSeconds % 60).padStart(2, "0");
   return (
-    <div className={["font-medium", "text-8xl", "text-center", "text-green-500", "p-8"].join(" ")}>{minutes}:{seconds}</div>
+    <div className={["font-bold", "text-8xl", "text-center", "text-green-500", "p-8"].join(" ")}>{minutes}:{seconds}</div>
   )
 }
 

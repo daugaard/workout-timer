@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 
 import useSound from 'use-sound';
 
-import { Quicksand } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 
 import { ActivityHeader, Timer, ProgressBar, GlobalProgress, Controls, WorkoutSetSettings } from "@/app/ui/components";
 import getWorkoutSet from "@/app/lib/data";
 
-const quicksand = Quicksand({ subsets: ["latin"] });
+const font = Noto_Sans({ subsets: ["latin"], weight: ["400", "700"]});
 
 
 export default function Home() {
@@ -97,11 +97,12 @@ export default function Home() {
     const index = workoutSet.activities.findIndex((activity) => activity.id === activity_id);
     setCurrentActivityIndex(index);
     setActivityTimeRemaining(workoutSet.activities[index].durationSeconds);
-    setTimeElapsed(0);
+    const timeElapsed = workoutSet.activities.slice(0, index).reduce((acc, activity) => acc + activity.durationSeconds, 0);
+    setTimeElapsed(timeElapsed);
   }
 
   return (
-    <main className={[quicksand.className, "flex", "min-h-screen", "flex-row", "justify-center"].join(" ")}>
+    <main className={[font.className, "flex", "min-h-screen", "flex-row", "justify-center"].join(" ")}>
       <div className="basis-4/5 pt-32 p-8">
         <ActivityHeader activityName={completedWorkout ? "Great job!!!" : currentActivity.name} nextActivityName={nextActivity ? nextActivity.name : undefined }/>
         <Timer timeSeconds={activityTimeRemaining} />
