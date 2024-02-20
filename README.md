@@ -11,4 +11,4 @@ npm run dev
 ```
 
 ## Or load it up 
-[https://workout-timer-opal.vercel.app/](https://workout-timer-opal.vercel.app/)
+[https://workout.sorenblonddaugaard.com](https://workout.sorenblonddaugaard.com)
