@@ -27,6 +27,8 @@ export default function Home() {
 
   const [shortBeep] = useSound("/sounds/beep-07a.mp3")
   const [longBeep] = useSound("/sounds/beep-09.mp3")
+
+  let wakeLock : any = null; // Variable to hold the wake lock
   
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -58,7 +60,6 @@ export default function Home() {
     return () => clearInterval(timerId);
   });
 
-  let wakeLock : any = null; // WakeLockSentinel
   function onStart() {
     setIsRunning(true);
     // Request a screen wake lock to keep the screen alive during the workout
@@ -83,6 +84,11 @@ export default function Home() {
     setCurrentActivityIndex(0);
     setActivityTimeRemaining(workoutSet.activities[0].durationSeconds);
     setTimeElapsed(0);
+    // Release the screen wake lock
+    if (wakeLock !== null) {
+      wakeLock.release();
+      wakeLock = null;
+    }
   }
 
   return (
