@@ -3,13 +3,21 @@
 import { WorkoutSet, Activity} from "@/app/lib/definitions"; 
 
 
-export function ActivityHeader({activityName, nextActivityName}: {activityName: string, nextActivityName? : string}) {
+export function ActivityHeader({currentActivity, nextActivity, completedWorkout}: {currentActivity: Activity, nextActivity? : Activity, completedWorkout: boolean}) {
+  let header = currentActivity.name;
+  let subHeader = nextActivity ? `Next: ${nextActivity.name}` : "Last activity - almost done!";
+
+  if (completedWorkout) {
+    header = "Workout Completed! 🎉";
+    subHeader = "🎉🎉🎉🎉🎉";
+  }
+
   return (
     <>
-      <h1 className={["text-7xl", "text-green-500", "font-bold", "text-center", "pt-8"].join(" ")}>
-        {activityName}
+      <h1 className={["text-7xl", currentActivity.active == "work" ? "text-amber-500" : "text-green-500", "font-bold", "text-center", "pt-8"].join(" ")}>
+        {header}
       </h1>
-      {nextActivityName && <h2 className={["text-4xl", "text-center", "p-8"].join(" ")}>Next: {nextActivityName}</h2>}
+      {subHeader && <h2 className={["text-4xl", "text-center", "p-8"].join(" ")}>{subHeader}</h2>}
     </>
   )
 

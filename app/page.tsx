@@ -17,7 +17,7 @@ export default function Home() {
   
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
   const currentActivity = workoutSet.activities[currentActivityIndex];
-  const nextActivity = workoutSet.activities.length > currentActivityIndex + 1 ? workoutSet.activities[currentActivityIndex + 1] : null;
+  const nextActivity = workoutSet.activities.length > currentActivityIndex + 1 ? workoutSet.activities[currentActivityIndex + 1] : undefined;
 
   const [activityTimeRemaining, setActivityTimeRemaining] = useState(currentActivity.durationSeconds);
   const [timeElapsed, setTimeElapsed] = useState(0);
@@ -52,9 +52,7 @@ export default function Home() {
             setIsRunning(false);
             setCompletedWorkout(true);
           }
-        }
-
-       
+        }       
       }
 
     }, 1000);
@@ -86,6 +84,7 @@ export default function Home() {
     setCurrentActivityIndex(0);
     setActivityTimeRemaining(workoutSet.activities[0].durationSeconds);
     setTimeElapsed(0);
+    setCompletedWorkout(false);
     // Release the screen wake lock
     if (wakeLock !== null) {
       wakeLock.release();
@@ -99,19 +98,20 @@ export default function Home() {
     setActivityTimeRemaining(workoutSet.activities[index].durationSeconds);
     const timeElapsed = workoutSet.activities.slice(0, index).reduce((acc, activity) => acc + activity.durationSeconds, 0);
     setTimeElapsed(timeElapsed);
+    setCompletedWorkout(false);
   }
 
   return (
     <main className={[font.className, "flex", "min-h-screen", "flex-row", "justify-center"].join(" ")}>
       <div className="basis-4/5 pt-32 p-8">
-        <ActivityHeader activityName={completedWorkout ? "Great job!!!" : currentActivity.name} nextActivityName={nextActivity ? nextActivity.name : undefined }/>
+        <ActivityHeader currentActivity={currentActivity} nextActivity={nextActivity} completedWorkout={completedWorkout}/>
         <Timer timeSeconds={activityTimeRemaining} />
         <ProgressBar timeRemaining={activityTimeRemaining} totalDuration={currentActivity.durationSeconds} />
         <GlobalProgress timeElapsed={timeElapsed} totalDuration={totalDuration} />
         <Controls onStart={onStart} onPause={onPause} onReset={onReset} isRunning={isRunning}/>
       </div>
       <div className="basis-1/5 p-8">
-        <WorkoutSetSettings workoutSet={workoutSet} currentActivityIndex={currentActivityIndex} onSetCurrentActivityIndex={ onSetCurrentActivityIndex }/>
+        <WorkoutSetSettings workoutSet={workoutSet} currentActivityIndex={currentActivityIndex} onSetCurrentActivityIndex={onSetCurrentActivityIndex}/>
       </div>
     </main>
   );
