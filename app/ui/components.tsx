@@ -3,11 +3,14 @@
 import { WorkoutSet, Activity} from "@/app/lib/definitions"; 
 
 
-export function ActivityHeader({activityName}: {activityName: string}) {
+export function ActivityHeader({activityName, nextActivityName}: {activityName: string, nextActivityName? : string}) {
   return (
-    <h1 className={["text-7xl", "text-green-500", "font-bold", "text-center", "p-8"].join(" ")}>
-      {activityName}
-    </h1>
+    <>
+      <h1 className={["text-7xl", "text-green-500", "font-bold", "text-center", "pt-8"].join(" ")}>
+        {activityName}
+      </h1>
+      {nextActivityName && <h2 className={["text-4xl", "text-center", "p-8"].join(" ")}>Next: {nextActivityName}</h2>}
+    </>
   )
 
 }
@@ -57,16 +60,16 @@ export function Controls({onStart, onPause, onReset, isRunning}: {onStart: () =>
   )
 }
 
-export function WorkoutSetSettings({workoutSet, currentActivityIndex}: {workoutSet: WorkoutSet, currentActivityIndex: number}) {
+export function WorkoutSetSettings({workoutSet, currentActivityIndex, onSetCurrentActivityIndex}: {workoutSet: WorkoutSet, currentActivityIndex: number, onSetCurrentActivityIndex: (index: number) => void}) {
   return (
     <div className="justify-center">
       <h1 className="text-2xl pb-1 text-center" >{workoutSet.name}</h1>
-      <WorkoutSetTable activities={workoutSet.activities} currentActivityIndex={currentActivityIndex} />
+      <WorkoutSetTable activities={workoutSet.activities} currentActivityIndex={currentActivityIndex} onSetCurrentActivityIndex={onSetCurrentActivityIndex} />
     </div>
   )
 }
 
-export function WorkoutSetTable({activities, currentActivityIndex}: {activities: Activity[], currentActivityIndex: number}) {
+export function WorkoutSetTable({activities, currentActivityIndex, onSetCurrentActivityIndex}: {activities: Activity[], currentActivityIndex: number, onSetCurrentActivityIndex: (index: number) => void}) {
     const totalDuration = activities.reduce((acc, activity) => acc + activity.durationSeconds, 0);
     const totalDurationMinutes = Math.floor(totalDuration / 60);
     const totalDurationSeconds = totalDuration % 60;
@@ -76,7 +79,7 @@ export function WorkoutSetTable({activities, currentActivityIndex}: {activities:
         <table className="">
           <tbody>
             {activities.map((activity, index) => (
-              <WorkoutSetActivity activity={activity} active={currentActivityIndex == index} key={activity.id} />
+              <WorkoutSetActivity activity={activity} active={currentActivityIndex == index} key={activity.id} onSetCurrentActivityIndex={onSetCurrentActivityIndex} />
             ))}
           </tbody>
         </table>
@@ -85,10 +88,10 @@ export function WorkoutSetTable({activities, currentActivityIndex}: {activities:
     )
 }
 
-export function WorkoutSetActivity({activity, active}: {activity: Activity, active: boolean}) {
+export function WorkoutSetActivity({activity, active, onSetCurrentActivityIndex}: {activity: Activity, active: boolean, onSetCurrentActivityIndex: (index: number) => void}) {
   const activeClass = active ? "bg-green-500" : "";
   return (
-    <tr className="w-full">
+    <tr className="w-full" onClick={() => onSetCurrentActivityIndex(activity.id)}>
       <td className={["w-full", "p-1", activeClass].join(" ") }>{activity.name} {active}</td>
       <td className={["p-1", activeClass].join(" ") }>{activity.durationSeconds}s</td>
       <td className={["p-1", activeClass].join(" ") }>{activity.active}</td>

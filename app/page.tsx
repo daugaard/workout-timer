@@ -17,7 +17,8 @@ export default function Home() {
   
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
   const currentActivity = workoutSet.activities[currentActivityIndex];
-  
+  const nextActivity = workoutSet.activities.length > currentActivityIndex + 1 ? workoutSet.activities[currentActivityIndex + 1] : null;
+
   const [activityTimeRemaining, setActivityTimeRemaining] = useState(currentActivity.durationSeconds);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -61,6 +62,7 @@ export default function Home() {
   });
 
   function onStart() {
+    setCompletedWorkout(false);
     setIsRunning(true);
     // Request a screen wake lock to keep the screen alive during the workout
     if ('wakeLock' in navigator) {
@@ -91,17 +93,24 @@ export default function Home() {
     }
   }
 
+  function onSetCurrentActivityIndex(activity_id: number) {
+    const index = workoutSet.activities.findIndex((activity) => activity.id === activity_id);
+    setCurrentActivityIndex(index);
+    setActivityTimeRemaining(workoutSet.activities[index].durationSeconds);
+    setTimeElapsed(0);
+  }
+
   return (
     <main className={[quicksand.className, "flex", "min-h-screen", "flex-row", "justify-center"].join(" ")}>
       <div className="basis-4/5 pt-32 p-8">
-        <ActivityHeader activityName={completedWorkout ? "Great job!!!" : currentActivity.name} />
+        <ActivityHeader activityName={completedWorkout ? "Great job!!!" : currentActivity.name} nextActivityName={nextActivity ? nextActivity.name : undefined }/>
         <Timer timeSeconds={activityTimeRemaining} />
         <ProgressBar timeRemaining={activityTimeRemaining} totalDuration={currentActivity.durationSeconds} />
         <GlobalProgress timeElapsed={timeElapsed} totalDuration={totalDuration} />
         <Controls onStart={onStart} onPause={onPause} onReset={onReset} isRunning={isRunning}/>
       </div>
       <div className="basis-1/5 p-8">
-        <WorkoutSetSettings workoutSet={workoutSet} currentActivityIndex={currentActivityIndex}/>
+        <WorkoutSetSettings workoutSet={workoutSet} currentActivityIndex={currentActivityIndex} onSetCurrentActivityIndex={ onSetCurrentActivityIndex }/>
       </div>
     </main>
   );
