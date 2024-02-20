@@ -41,58 +41,59 @@ export function GlobalProgress({timeElapsed, totalDuration}: {timeElapsed: numbe
   return (
     <div className="pt-8">
       <div className="flex justify-between">
-        <span>{minutesElapsed}:{secondsElapsed}</span>
-        <span>{minutesLeft}:{secondsLeft}</span>
+        <span className="text-2xl p-2">{minutesElapsed}:{secondsElapsed}</span>
+        <span className="text-2xl p-2">{minutesLeft}:{secondsLeft}</span>
       </div>
       <ProgressBar timeRemaining={totalDuration-timeElapsed} totalDuration={totalDuration} />
     </div>
   )
 }
 
-export function Controls({onStart, onPause, onReset}: {onStart: () => void, onPause: () => void, onReset: () => void}) {
+export function Controls({onStart, onPause, onReset, isRunning}: {onStart: () => void, onPause: () => void, onReset: () => void, isRunning: boolean}) {
   return (
     <div className="pt-8 flex justify-between">
-      <button onClick={onStart}>Start</button>
-      <button onClick={onPause}>Pause</button>
-      <button onClick={onReset}>Reset</button>
+      <button onClick={onPause} className={["text-4xl", isRunning ? "" : "text-slate-800"].join(" ")}>Pause</button>
+      <button onClick={onStart} className={["text-4xl", isRunning ? "text-slate-800" : ""].join(" ")} >Start</button>
+      <button onClick={onReset} className="text-4xl">Reset</button>
     </div>
   )
 }
 
-export function WorkoutSetSettings({workoutSet}: {workoutSet: WorkoutSet}) {
+export function WorkoutSetSettings({workoutSet, currentActivityIndex}: {workoutSet: WorkoutSet, currentActivityIndex: number}) {
   return (
-    <div>
-      <h1>{workoutSet.name}</h1>
-      <WorkoutSetTable activities={workoutSet.activities} />
+    <div className="justify-center">
+      <h1 className="text-2xl pb-1 text-center" >{workoutSet.name}</h1>
+      <WorkoutSetTable activities={workoutSet.activities} currentActivityIndex={currentActivityIndex} />
     </div>
   )
 }
 
-export function WorkoutSetTable({activities}: {activities: Activity[]}) {
+export function WorkoutSetTable({activities, currentActivityIndex}: {activities: Activity[], currentActivityIndex: number}) {
     const totalDuration = activities.reduce((acc, activity) => acc + activity.durationSeconds, 0);
     const totalDurationMinutes = Math.floor(totalDuration / 60);
     const totalDurationSeconds = totalDuration % 60;
 
     return (
       <>
-        <table className="border border-slate-500">
+        <table className="">
           <tbody>
-            {activities.map(activity => (
-              <WorkoutSetActivity activity={activity} key={activity.id} />
+            {activities.map((activity, index) => (
+              <WorkoutSetActivity activity={activity} active={currentActivityIndex == index} key={activity.id} />
             ))}
           </tbody>
         </table>
-        <span>Total Duration: {totalDurationMinutes} minutes and {totalDurationSeconds}</span>
+        <p className="text-right">Total Duration: {totalDurationMinutes} minutes {totalDurationSeconds} seconds</p>
       </>
     )
 }
 
-export function WorkoutSetActivity({activity}: {activity: Activity}) {
+export function WorkoutSetActivity({activity, active}: {activity: Activity, active: boolean}) {
+  const activeClass = active ? "bg-green-500" : "";
   return (
-    <tr className="border border-slate-500">
-      <td className="border border-slate-500 p-2">{activity.name}</td>
-      <td className="border border-slate-500 p-2">{activity.durationSeconds}s</td>
-      <td className="border border-slate-500 p-2">{activity.active}</td>
+    <tr className="w-full">
+      <td className={["w-full", "p-1", activeClass].join(" ") }>{activity.name} {active}</td>
+      <td className={["p-1", activeClass].join(" ") }>{activity.durationSeconds}s</td>
+      <td className={["p-1", activeClass].join(" ") }>{activity.active}</td>
     </tr>
   )
 }

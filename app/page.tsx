@@ -70,15 +70,15 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-row justify-center">
-      <div className="basis-4/5 p-8">
+      <div className="basis-4/5 pt-32 p-8">
         <ActivityHeader activityName={completedWorkout ? "Great job!!!" : currentActivity.name} />
         <Timer timeSeconds={activityTimeRemaining} />
         <ProgressBar timeRemaining={activityTimeRemaining} totalDuration={currentActivity.durationSeconds} />
         <GlobalProgress timeElapsed={timeElapsed} totalDuration={totalDuration} />
-        <Controls onStart={onStart} onPause={onPause} onReset={onReset} />
+        <Controls onStart={onStart} onPause={onPause} onReset={onReset} isRunning={isRunning}/>
       </div>
       <div className="basis-1/5 p-8">
-        <WorkoutSetSettings workoutSet={workoutSet} />
+        <WorkoutSetSettings workoutSet={workoutSet} currentActivityIndex={currentActivityIndex}/>
       </div>
     </main>
   );
