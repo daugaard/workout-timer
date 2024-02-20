@@ -1,9 +1,7 @@
 "use client"
 
-import { Roboto_Mono } from "next/font/google";
 import { WorkoutSet, Activity} from "@/app/lib/definitions"; 
 
-const roboto_mono = Roboto_Mono({ subsets: ["latin"] });
 
 export function ActivityHeader({activityName}: {activityName: string}) {
   return (
@@ -18,7 +16,7 @@ export function Timer({timeSeconds}: {timeSeconds: number}) {
   const minutes : String = String(Math.floor(timeSeconds / 60)).padStart(2, "0");
   const seconds : String = String(timeSeconds % 60).padStart(2, "0");
   return (
-    <div className={[roboto_mono.className, "font-medium", "text-8xl", "text-center", "text-green-500", "p-8"].join(" ")}>{minutes}:{seconds}</div>
+    <div className={["font-medium", "text-8xl", "text-center", "text-green-500", "p-8"].join(" ")}>{minutes}:{seconds}</div>
   )
 }
 
@@ -51,7 +49,7 @@ export function GlobalProgress({timeElapsed, totalDuration}: {timeElapsed: numbe
 
 export function Controls({onStart, onPause, onReset, isRunning}: {onStart: () => void, onPause: () => void, onReset: () => void, isRunning: boolean}) {
   return (
-    <div className="pt-8 flex justify-between">
+    <div className="pt-16 flex justify-between">
       <button onClick={onPause} className={["text-4xl", isRunning ? "" : "text-slate-800"].join(" ")}>Pause</button>
       <button onClick={onStart} className={["text-4xl", isRunning ? "text-slate-800" : ""].join(" ")} >Start</button>
       <button onClick={onReset} className="text-4xl">Reset</button>

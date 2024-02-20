@@ -3,9 +3,13 @@
 import { useState, useEffect } from "react";
 
 import useSound from 'use-sound';
+import { Quicksand } from "next/font/google";
 
 import { ActivityHeader, Timer, ProgressBar, GlobalProgress, Controls, WorkoutSetSettings } from "@/app/ui/components";
 import getWorkoutSet from "@/app/lib/data";
+
+const quicksand = Quicksand({ subsets: ["latin"] });
+
 
 export default function Home() {
   const workoutSet = getWorkoutSet();
@@ -69,7 +73,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-row justify-center">
+    <main className={[quicksand.className, "flex", "min-h-screen", "flex-row", "justify-center"].join(" ")}>
       <div className="basis-4/5 pt-32 p-8">
         <ActivityHeader activityName={completedWorkout ? "Great job!!!" : currentActivity.name} />
         <Timer timeSeconds={activityTimeRemaining} />
