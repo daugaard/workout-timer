@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import useSound from 'use-sound';
 
@@ -29,7 +29,7 @@ export default function Home() {
   const [shortBeep] = useSound("/sounds/beep-07a.mp3")
   const [longBeep] = useSound("/sounds/beep-09.mp3")
 
-  let wakeLock : any = null; // Variable to hold the wake lock
+  const wakeLockRef = useRef<WakeLockSentinel | null>(null);
   
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -65,7 +65,7 @@ export default function Home() {
     // Request a screen wake lock to keep the screen alive during the workout
     if ('wakeLock' in navigator) {
       navigator.wakeLock.request('screen').then((wl) => {
-        wakeLock = wl;
+        wakeLockRef.current = wl;
       });
     }
   }
@@ -73,9 +73,9 @@ export default function Home() {
   function onPause() {
     setIsRunning(false);
     // Release the screen wake lock
-    if (wakeLock !== null) {
-      wakeLock.release();
-      wakeLock = null;
+    if (wakeLockRef.current !== null) {
+      wakeLockRef.current.release();
+      wakeLockRef.current = null;
     }
   }
 
@@ -86,9 +86,9 @@ export default function Home() {
     setTimeElapsed(0);
     setCompletedWorkout(false);
     // Release the screen wake lock
-    if (wakeLock !== null) {
-      wakeLock.release();
-      wakeLock = null;
+    if (wakeLockRef.current !== null) {
+      wakeLockRef.current.release();
+      wakeLockRef.current = null;
     }
   }
 

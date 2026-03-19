@@ -24,8 +24,8 @@ export function ActivityHeader({currentActivity, nextActivity, completedWorkout}
 }
 
 export function Timer({timeSeconds}: {timeSeconds: number}) {
-  const minutes : String = String(Math.floor(timeSeconds / 60)).padStart(2, "0");
-  const seconds : String = String(timeSeconds % 60).padStart(2, "0");
+  const minutes: string = String(Math.floor(timeSeconds / 60)).padStart(2, "0");
+  const seconds: string = String(timeSeconds % 60).padStart(2, "0");
   return (
     <div className={["font-bold", "text-8xl", "text-center", "text-green-500", "p-8"].join(" ")}>{minutes}:{seconds}</div>
   )
@@ -41,11 +41,11 @@ export function ProgressBar({timeRemaining, totalDuration}: {timeRemaining: numb
 }
 
 export function GlobalProgress({timeElapsed, totalDuration}: {timeElapsed: number, totalDuration: number}) {
-  const minutesElapsed : String = String(Math.floor(timeElapsed / 60)).padStart(2, "0");
-  const secondsElapsed : String = String(timeElapsed % 60).padStart(2, "0");
+  const minutesElapsed: string = String(Math.floor(timeElapsed / 60)).padStart(2, "0");
+  const secondsElapsed: string = String(timeElapsed % 60).padStart(2, "0");
   const totalLeft = totalDuration - timeElapsed;
-  const minutesLeft : String = String(Math.floor(totalLeft / 60)).padStart(2, "0");
-  const secondsLeft : String = String(totalLeft % 60).padStart(2, "0");
+  const minutesLeft: string = String(Math.floor(totalLeft / 60)).padStart(2, "0");
+  const secondsLeft: string = String(totalLeft % 60).padStart(2, "0");
 
   return (
     <div className="pt-8">
